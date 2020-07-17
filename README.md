@@ -5,6 +5,15 @@
 2. [Typical Users](#typical-users)
 3. [Spreadsheets vs. Databases](#spreadsheets-vs-databases)
 4. [SQL Statement Fundamentals](#sql-statement-fundamentals)
+   1. [SELECT](#select-statement)
+   2. [DISTINCT](#select-distinct)
+   3. [COUNT](#count)
+   4. [WHERE](#select-where)
+   5. [ORDER BY](#order-by)
+   6. [LIMIT](#limit)
+   7. [BETWEEN](#between)
+   8. [IN](#in)
+   9. [LIKE, ILIKE](#like-and-ilike)
 5. [GROUP BY Statements](#group-by-statements)
 6. [JOINS](#joins)
 7. [Advanced SQL Commands](#advanced-sql-commands)
@@ -167,3 +176,67 @@ Example: `SELECT version from programs WHERE version LIKE 'VERSION#__';`
 
 Example: `SELECT COUNT(*) from employees WHERE name LIKE '_her%';`
 - Returns the number of all names that contain the letters 'her' with exactly one letter preceding it. 
+
+## GROUP BY Statements
+
+### Aggregation Functions
+An aggregate function computes a single result from a set of input values. 
+
+Aggregate function calls occur only in the `SELECT` clause or the `HAVING` clause. 
+
+Most common aggregate functions:
+- `AVG(expression)`: returns average
+  - Returns floating point value to many decimal places. 
+  - Recommended to use `round()` to specify precision after the decimal. 
+- `COUNT(expression)`: returns number of values
+  - Returns number of rows, which by convention can use `COUNT(*)`. 
+- `MAX(expression)`: returns max
+- `MIN(expression)`: returns min
+- `SUM(expression)`: returns sum 
+
+Example: `SELECT MIN(replacement_cost) FROM film;`
+
+Example: `SELECT MAX(replacement_cost), MIN(replacement_cost) FROM film;`
+
+Example: `SELECT ROUND(AVG(replacement_cost), 2) FROM film;`
+- `ROUND()` accepts 2 parameters: the first being a floating point value, and the second being the number of decimal places desired. 
+
+[PostgreSQL docs on aggregate functions](https://www.postgresql.org/docs/current/functions-aggregate.html)
+
+### GROUP BY
+Allows aggregation of columns per some category. 
+
+Format: `SELECT category_col, AGG(data_col) FROM table GROUP BY category_col;`
+
+`GROUP BY` must appear immediately after a `FROM` or `WHERE` statement. 
+
+or `SELECT category_col, AGG(data_col) FROM table WHERE condition GROUP BY category_col;`. 
+
+Categorical columns are non-continuous, but can still be numerical (e.g. Class 1, Class 2, Class 3). A categorical column must be chosen to `GROUP BY` with. 
+
+Upon `GROUP BY`, data values associated with redundant categories in categorical columns are separated into tables unique to that specific category. When an aggregate function is performed on these separated tables, a new condensed table is formed that merges the repeated categories. 
+
+![groupbyimg1](img/groupby1.JPG)
+*Source: Jose Portilla, Pierian Data Inc.*
+
+In the `SELECT` statement, columns must either have an aggregate function or be in the `GROUP BY` call. 
+
+Example: `SELECT company, division, SUM(sales) FROM finance_table GROUP BY company, division;`
+- Returns total sum of sales, per division and per company. 
+- The company and division columns are not passed into the aggregate function, and thus must appear in the `GROUP BY` clause. 
+- The sales column does not appear in the `GROUP BY` statement, and thus must be passed into the aggregate function. 
+
+`WHERE` statements should not refer to the aggregation result. 
+
+If sorting (`ORDER BY`) is needed based on the aggregate, the entire function must be referenced. 
+
+Example: `SELECT company, SUM(sales) FROM finance_table GROUP BY company ORDER BY SUM(sales);`. 
+
+Example: `SELECT customer_id, staff_id, SUM(amount) from payment WHERE customer_id=341 GROUP BY customer_id, staff_id ORDER BY customer_id;`
+
+Example: `SELECT DATE(payment_date), SUM(amount) FROM payment GROUP BY DATE(payment_date) ORDER BY SUM(amount) DESC;`
+
+### HAVING
+Allows using the aggregate result as a filter along with a `GROUP BY` clause. 
+
+Format: `SELECT column1, AGG(column2) FROM table WHERE condition GROUP BY column1/2 HAVING AGG(column2) [comparative condition];`
