@@ -237,6 +237,19 @@ Example: `SELECT customer_id, staff_id, SUM(amount) from payment WHERE customer_
 Example: `SELECT DATE(payment_date), SUM(amount) FROM payment GROUP BY DATE(payment_date) ORDER BY SUM(amount) DESC;`
 
 ### HAVING
-Allows using the aggregate result as a filter along with a `GROUP BY` clause. 
+Allows using the aggregate result as a filter along with a `GROUP BY` clause. This circumvents the issue of being unable to filter the aggregate via `WHERE`, since aggregation occurs after the `WHERE` clause, and `WHERE` filters non-aggregate properties.
 
 Format: `SELECT column1, AGG(column2) FROM table WHERE condition GROUP BY column1/2 HAVING AGG(column2) [comparative condition];`
+
+Example: `SELECT customer_id, sum(amount) FROM payment GROUP BY customer_id HAVING sum(amount) > 100 ORDER BY customer_id;`
+- Returns customers in payment table that have a total amount greater than 100. 
+
+Example: `SELECT store_id, COUNT(*) FROM customer GROUP BY store_id HAVING COUNT(*) > 300;`
+- Returns store_id's that have more than 300 rows. 
+
+Example: `SELECT customer_id, COUNT(*) FROM payment GROUP BY customer_id HAVING COUNT(*) >= 40;`
+- Returns customers with 40 or more payments. 
+
+Example: `SELECT customer_id, SUM(amount) from payment WHERE staff_id = 2 GROUP BY customer_id HAVING SUM(amount) > 100;`
+- Returns customers associated with staff_id 2 whose sum amount is greater than 100. 
+
