@@ -15,7 +15,10 @@
    8. [IN](#in)
    9. [LIKE, ILIKE](#like-and-ilike)
 5. [GROUP BY Statements](#group-by-statements)
-6. [JOINS](#joins)
+   1. [Aggregation Functions](#aggregation-functions)
+   2. [GROUP BY](#group-by)
+   3. [HAVING](#having)
+6. [Joins](#joins)
 7. [Advanced SQL Commands](#advanced-sql-commands)
 8. [Creating Databases/Tables](#creating-databases-tables)
 9. [Conditional Expressions and Procedures](#conditional-expressions-and-procedures)
@@ -253,3 +256,10 @@ Example: `SELECT customer_id, COUNT(*) FROM payment GROUP BY customer_id HAVING 
 Example: `SELECT customer_id, SUM(amount) from payment WHERE staff_id = 2 GROUP BY customer_id HAVING SUM(amount) > 100;`
 - Returns customers associated with staff_id 2 whose sum amount is greater than 100. 
 
+## Joins
+
+## Advanced SQL Commands
+
+## Creating Databases/Tables
+
+## Conditional Expressions and Procedures
