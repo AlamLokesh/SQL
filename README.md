@@ -19,9 +19,17 @@
    2. [GROUP BY](#group-by)
    3. [HAVING](#having)
 6. [Joins](#joins)
+   1. [AS](#as)
+   2. [INNER JOIN](#inner-join)
+   3. [FULL OUTER JOIN](#full-outer-join)
+   4. [LEFT OUTER JOIN](#left-outer-join-left-join)
+   5. [RIGHT JOIN](#right-join)
+   6. [UNION](#union)
 7. [Advanced SQL Commands](#advanced-sql-commands)
 8. [Creating Databases/Tables](#creating-databases-tables)
 9. [Conditional Expressions and Procedures](#conditional-expressions-and-procedures)
+
+*Disclaimer: images and subject matter sourced from Jose Portilla, Pierian Data, "The Complete SQL Bootcamp 2020"*
 
 ## SQL Compatibility
 SQL can be used with most engines/software/databases that implement SQL (PostgreSQL, MySQL, Amazon RedShift, Microsoft SQL Server, MySQL, Oracle Database). 
@@ -257,6 +265,131 @@ Example: `SELECT customer_id, SUM(amount) from payment WHERE staff_id = 2 GROUP 
 - Returns customers associated with staff_id 2 whose sum amount is greater than 100. 
 
 ## Joins
+Allows combination of multiple tables. 
+
+In general, `INNER JOIN`s allow matching between column commonalities between both tables. `OUTER JOIN`s allow specifying how to deal with values present in only one of these tables. 
+
+### AS
+Allows creating an alias for a column or result. 
+
+Format: `SELECT column AS new_name FROM table;`
+
+Can also use this on aggregate functions to re-name the column to something more useful. 
+
+Format: `SELECT SUM(column) AS new_name FROM table;`
+
+Example: 
+```
+SELECT customer_id, COUNT(rental_id) AS all_rentals, SUM(amount) AS TOTAL_payment
+FROM payment
+GROUP BY customer_id
+ORDER BY total_payment DESC;
+```
+- Returns number of rentals and total payments of each customer, sorted from most to least total payment. 
+
+`AS` is executed at very end of the query, thus cannot use the alias name inside a `WHERE` operator. 
+
+Example (wrong): `SELECT SUM(payment) AS total_payment FROM table WHERE total_payment > 100;`
+
+Example (correct): `SELECT SUM(payment) AS total_payment FROM table WHERE SUM(payment) > 100;`
+
+### INNER JOIN
+Results in the set of records that match in **both** tables. Joined table is joined `ON` the specified column match between both tables. 
+
+Format: `SELECT * FROM table1 INNER JOIN table2 ON table1.col_match = table2.col_match;`
+
+Since the column names are identical, must specify what table the column is referring to in the `ON` clause, via `table1.col_match = table2.col_match`. 
+
+If only `JOIN` written in query, PostgreSQL defaults to `INNER JOIN`. 
+
+Format: `SELECT * FROM table1 JOIN table2 ON table1.col_match = table2.col_match;`
+
+With `INNER JOIN`, the column commonality between both tables allows switching table references in the query. 
+
+Format: `SELECT * FROM table2 INNER JOIN table1 ON table1.col_match = table2.col_match;`
+
+Example: `SELECT * FROM Registrations INNER JOIN Logins ON Registrations.name = Logins.name;`
+
+![innerjoin1](img/innerjoin1.JPG)
+
+To remove redundancy of matched columns appearing more than once, specify the columns to be shown exactly once as part of the `SELECT` clause. 
+
+Example: `SELECT reg_id, Logins.name, log_id FROM Registrations INNER JOIN Logins ON Registrations.name = Logins.name;`
+
+![innerjoin2](img/innerjoin2.JPG)
+
+Non-redundant column names do not necessitate referencing the table it is from. 
+
+Example: `SELECT payment.customer_id, payment_id, first_name FROM payment INNER JOIN customer ON payment.customer_id = customer.customer_id;`
+- `payment_id` and `first_name` columns are unique to their respective tables, while `customer_id` is in both tables. 
+
+### FULL OUTER JOIN
+Selects all information from both tables. 
+
+Format: `SELECT * FROM table1 FULL OUTER JOIN table2 ON table1.col_match = table2.col_match;`
+
+The joined table includes column commonality from the `ON` condition, unique information to table1, and unique information to table 2. Table areas adjacent to the unique information from each table are filled with `null`. 
+
+Example: `SELECT * FROM Registrations FULL OUTER JOIN Logins ON Registrations.name = Logins.name;`
+
+![fullouterjoin1](img/fullouterjoin1.JPG)
+
+To return only rows unique to each table, specify a condition in a `WHERE` clause. Essentially a filtered `FULL OUTER JOIN`. 
+
+Format: 
+```
+SELECT * FROM table2
+FULL OUTER JOIN table1
+ON table1.col_match = table2.col_match
+WHERE table1.id IS null OR 
+table2.id IS null;
+```
+
+Example: 
+```
+SELECT * FROM Registrations
+FULL OUTER JOIN Logins
+ON Registrations.name = Logins.name
+WHERE Registrations.reg_id IS null OR
+Logins.log_id IS null;
+```
+
+![fullouterjoin2](img/fullouterjoin2.JPG)
+
+Example: 
+```
+SELECT * from customer
+FULL OUTER JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE customer.customer_id IS null
+OR payment_id IS null
+```
+- Returns a joined customer/payment table on customer id where the customer id or payment id do not exist. Ensures customer information (email, name, etc.) are stored only if payment or purchsae history exists for that customer. 
+
+### LEFT OUTER JOIN/LEFT JOIN
+Results in set of records that are in the 'left' table; includes all left table results and commonalities between left and right table. If there is no match with the right table, results are `null`. 
+
+Format: `SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col_match = table2.col_match;`
+
+or 
+
+Format: `SELECT * FROM table1 LEFT JOIN table2 ON table1.col_match = table2.col_match;`
+
+Example: `SELECT * FROM Registrations LEFT JOIN Logins ON Registrations.name = Logins.name;`
+
+![leftjoin1](img/leftjoin1.JPG)
+
+To return results **exclusive** to the left table, specify a condition in `WHERE` that accounts for the right table join results being `null`. 
+
+Format: `SELECT * FROM table1 LEFT JOIN table2 ON table1.col_match = table2.col_match WHERE table2.id IS null;`
+
+Example: `SELECT * FROM Registrations LEFT OUTER JOIN Logins ON Registrations.name = Logins.name WHERE Logins.log_id IS null;`
+
+![leftjoin2](img/leftjoin2.JPG)
+
+### RIGHT JOIN
+
+### UNION
 
 ## Advanced SQL Commands
 
