@@ -22,8 +22,8 @@
    1. [AS](#as)
    2. [INNER JOIN](#inner-join)
    3. [FULL OUTER JOIN](#full-outer-join)
-   4. [LEFT OUTER JOIN](#left-outer-join-left-join)
-   5. [RIGHT JOIN](#right-join)
+   4. [LEFT OUTER JOIN](#left-outer-join)
+   5. [RIGHT JOIN](#right-outer-join)
    6. [UNION](#union)
 7. [Advanced SQL Commands](#advanced-sql-commands)
 8. [Creating Databases/Tables](#creating-databases-tables)
@@ -366,7 +366,7 @@ OR payment_id IS null
 ```
 - Returns a joined customer/payment table on customer id where the customer id or payment id do not exist. Ensures customer information (email, name, etc.) are stored only if payment or purchsae history exists for that customer. 
 
-### LEFT OUTER JOIN/LEFT JOIN
+### LEFT (OUTER) JOIN
 Results in set of records that are in the 'left' table; includes all left table results and commonalities between left and right table. If there is no match with the right table, results are `null`. 
 
 Format: `SELECT * FROM table1 LEFT OUTER JOIN table2 ON table1.col_match = table2.col_match;`
@@ -387,9 +387,28 @@ Example: `SELECT * FROM Registrations LEFT OUTER JOIN Logins ON Registrations.na
 
 ![leftjoin2](img/leftjoin2.JPG)
 
-### RIGHT JOIN
+Example: 
+```
+SELECT film.film_id, title, inventory_id, store_id
+FROM film
+LEFT JOIN inventory 
+ON inventory.film_id = film.film_id
+WHERE inventory.film_id IS null;
+```
+- Lists film titles and their ids that are not in inventory. 
+
+### RIGHT (OUTER) JOIN
+The same as a LEFT JOIN, with the exception being the table positionings being switched. 
+
+Format: `SELECT * FROM table1 RIGHT OUTER JOIN table2 ON table1.col_match = table2.col_match;`
+- Equivalent to `SELECT * FROM table2 LEFT OUTER JOIN table1 ON table1.col_match = table2.col_match;`.
 
 ### UNION
+Used to combine the result-set of two or more SELECT statements. Concatenates two resultant tables together. 
+
+Format: `SELECT column_name(s) FROM table1 UNION SELECT column_name(s) FROM table2;`
+
+
 
 ## Advanced SQL Commands
 
