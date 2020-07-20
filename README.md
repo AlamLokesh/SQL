@@ -25,7 +25,13 @@
    4. [LEFT OUTER JOIN](#left-outer-join)
    5. [RIGHT JOIN](#right-outer-join)
    6. [UNION](#union)
+   7. [Multiple JOINs](#multiple-joins)
 7. [Advanced SQL Commands](#advanced-sql-commands)
+   1. [Timestamps and EXTRACT](#timestamps-and-extract)
+   2. [Mathematical Functions and Operators](#mathematical-functions-and-operators)
+   3. [String Functions and Operators](#string-functions-and-operators)
+   4. [SubQuery](#subquery)
+   5. [Self-Join](#self-join)
 8. [Creating Databases/Tables](#creating-databases-tables)
 9. [Conditional Expressions and Procedures](#conditional-expressions-and-procedures)
 
@@ -398,19 +404,46 @@ WHERE inventory.film_id IS null;
 - Lists film titles and their ids that are not in inventory. 
 
 ### RIGHT (OUTER) JOIN
-The same as a LEFT JOIN, with the exception being the table positionings being switched. 
+Returns all results of the right table including commonalities with the left table. The same as a LEFT JOIN, except switched for the right table. 
 
 Format: `SELECT * FROM table1 RIGHT OUTER JOIN table2 ON table1.col_match = table2.col_match;`
 - Equivalent to `SELECT * FROM table2 LEFT OUTER JOIN table1 ON table1.col_match = table2.col_match;`.
 
 ### UNION
-Used to combine the result-set of two or more SELECT statements. Concatenates two resultant tables together. 
+Used to combine the result-set of two or more SELECT statements. Concatenates, or literally merges, two resultant tables together - independent of column commonality. 
 
 Format: `SELECT column_name(s) FROM table1 UNION SELECT column_name(s) FROM table2;`
 
+Example: `SELECT * FROM Sales2021_Q1 UNION SELECT * FROM Sales2021_Q2;`
 
+![union](img/union.JPG)
+
+### Multiple JOINs
+If more than 2 tables are involved in a query, use at least 2 joins to obtain the desired results. 
+
+Example: 
+```
+SELECT title, first_name, last_name FROM film
+JOIN film_actor
+ON film.film_id = film_actor.film_id
+JOIN actor
+ON film_actor.actor_id = actor.actor_id
+WHERE first_name = 'Nick' AND last_name = 'Wahlberg';
+```
+- Returns all movies in which 'Nick Wahlberg' is an actor. `actor` table includes actor `first_name`s, `last_name`s, and `actor_id`s. `film` includes film information, including `film_id`. `film_actor` includes `actor_id` and associated `film_id`s. Since 3 tables are needed to obtain the requested information on the 2 commonalities of `film_id` and `actor_id`, 2 `INNER JOIN`s are required. 
 
 ## Advanced SQL Commands
+
+### Timestamps and EXTRACT
+
+
+### Mathematical Functions and Operators
+
+### String Functions and Operators
+
+### SubQuery
+
+### Self-Join
 
 ## Creating Databases/Tables
 
