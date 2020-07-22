@@ -435,7 +435,32 @@ WHERE first_name = 'Nick' AND last_name = 'Wahlberg';
 ## Advanced SQL Commands
 
 ### Timestamps and EXTRACT
+PostgreSQL can hold date and time information. 
+- `TIME`: contains only time
+- `DATE`: contains only date
+- `TIMESTAMP`: contains date and time
+- `TIMESTAMPTZ`: contains date, time, and timezone
 
+Caution: it is possible to remove information from datetime information, but not add. 
+
+`SHOW ALL;`: Command and parameter that list all possible parameters. 
+
+`SELECT NOW();` : Provides current date and time in `timestamp with time zone` format. Example: `2020-07-20 21:13:30.134498-07`
+
+`SELECT TIMEOFDAY();` : Provides current date and time in `text` format. May be preferred over `SELECT NOW();` for better intelligibility. Example: `Mon Jul 20 21:13:14.860518 2020 PDT`
+
+`SELECT CURRENT_TIME;` : Provides current time in `time with time zone` format. Example: `21:12:28.542536-07:00`
+
+`SELECT CURRENT_DATE;` : Provides current date in `date` format. Example: `2020-07-20`
+
+It is possible to extract infomration from time-based data type with the following functions: 
+- `EXTRACT()` : allows extraction of a sub-component of a date value using any of the parameters `YEAR`, `MONTH`, `DAY`, `WEEK`, and `QUARTER`. 
+  - Format: `EXTRACT(YEAR FROM date_col);`
+- `AGE()` : calculates and returns current age given a timestamp. 
+  - Format: `AGE(date_col);`
+  - Example return: `13 years 1 mon 5 days 01:35:13.003423`
+- `TO_CHAR()` : general function to convert data types to text. 
+  - 
 
 ### Mathematical Functions and Operators
 
