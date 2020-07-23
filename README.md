@@ -435,7 +435,7 @@ WHERE first_name = 'Nick' AND last_name = 'Wahlberg';
 ## Advanced SQL Commands
 
 ### Timestamps and EXTRACT
-PostgreSQL can hold date and time information. 
+SQL queries and tables can handle date and time information. [Datetime Functions, PostgreSQL](https://www.postgresql.org/docs/8.3/functions-datetime.html)
 - `TIME`: contains only time
 - `DATE`: contains only date
 - `TIMESTAMP`: contains date and time
@@ -454,17 +454,35 @@ Caution: it is possible to remove information from datetime information, but not
 `SELECT CURRENT_DATE;` : Provides current date in `date` format. Example: `2020-07-20`
 
 It is possible to extract infomration from time-based data type with the following functions: 
-- `EXTRACT()` : allows extraction of a sub-component of a date value using any of the parameters `YEAR`, `MONTH`, `DAY`, `WEEK`, and `QUARTER`. 
+- `EXTRACT()` : allows extraction of a sub-component of a date value using the field parameters `YEAR`, `MONTH`, `DAY`, `WEEK`, `QUARTER`, `DOW`, `DECADE`, etc. 
   - Format: `EXTRACT(YEAR FROM date_col);`
-- `AGE()` : calculates and returns current age given a timestamp. 
+  - Example: `SELECT EXTRACT(YEAR FROM payment_date) AS year FROM payment;`
+    - Returns the year in each column and names the column as `year`. 
+  - Example: `SELECT COUNT(*) FROM payment WHERE EXTRACT(DOW FROM payment_date) = 1;` 
+    - Returns the number of payments made on a Monday (Sunday = 0, Saturday = 6). 
+- `AGE()` : calculates and returns current age given a timestamp recorded in the database. 
   - Format: `AGE(date_col);`
   - Example return: `13 years 1 mon 5 days 01:35:13.003423`
-- `TO_CHAR()` : general function to convert data types to text. 
-  - 
+- `TO_CHAR()` : general function to convert data types to text. Especially useful for timestamp formatting. [TO_CHAR, PostgreSQL](https://www.postgresql.org/docs/12/functions-formatting.html)
+  - Format: `TO_CHAR(date_col, string_format);`
+  - Example: `SELECT TO_CHAR(payment_date, 'MONTH-YYYY') FROM payment;`
+    - Returns date as `MONTH-YYYY`. 
+  - Example: `SELECT TO_CHAR(payment_date, 'mon/dd/YYYY') FROM payment;`
+  - Example: `SELECT DISTINCT(TO_CHAR(payment_date, 'MONTH')) FROM payment;`
+    - Returns unique months that payments were made in. 
 
 ### Mathematical Functions and Operators
+Perform mathematical functions and use operators between columns in a table. [Mathematical Functions and Operators Docs, PostgreSQL](https://www.postgresql.org/docs/9.5/functions-math.html)
+
+Example: `SELECT ROUND(rental_rate/replacement_cost)*100 FROM film;`
+- Returns result of dividing `rental_rate` by `replacement` to 2 places, multiplied by 100 to obtain percentage. 
+Example: `SELECT 0.1 * replacement_cost AS deposit FROM film;`
+- Returns 10% of replacement costs. 
 
 ### String Functions and Operators
+Perform functions and use operators on String types. [String functions and Operators, PostgreSQL](https://www.postgresql.org/docs/current/functions-string.html)
+
+
 
 ### SubQuery
 
