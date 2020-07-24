@@ -476,13 +476,21 @@ Perform mathematical functions and use operators between columns in a table. [Ma
 
 Example: `SELECT ROUND(rental_rate/replacement_cost)*100 FROM film;`
 - Returns result of dividing `rental_rate` by `replacement` to 2 places, multiplied by 100 to obtain percentage. 
+
 Example: `SELECT 0.1 * replacement_cost AS deposit FROM film;`
 - Returns 10% of replacement costs. 
 
 ### String Functions and Operators
 Perform functions and use operators on String types. [String functions and Operators, PostgreSQL](https://www.postgresql.org/docs/current/functions-string.html)
 
+Example: `SELECT LENGTH(first_name) FROM customer;`
+- Returns length of the string column `first_name`. 
 
+Example: `SELECT upper(first_name) || ' ' || upper(last_name) AS full_name FROM customer;`
+- Returns concatenated strings from `first_name` and `last_name` with a space inbetween all upper-cased, column alias `full_name`.  
+
+Example: `SELECT lower(left(first_name, 1)) || lower(last_name) AS full_name FROM customer;`
+- Returns first letter of `first_name` concatenated with `last_name`, all lower-cased with column alias `full_name`. 
 
 ### SubQuery
 
