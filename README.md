@@ -493,6 +493,28 @@ Example: `SELECT lower(left(first_name, 1)) || lower(last_name) AS full_name FRO
 - Returns first letter of `first_name` concatenated with `last_name`, all lower-cased with column alias `full_name`. 
 
 ### SubQuery
+Allows construction of complex queries, essentially performing queries on the resultant of another query. One of the queries 
+
+Example: the following two queries give separate results that eventually depend on each other to get a list of students who scored better than the average grade: 
+- `SELECT student, grade FROM test_scores;` : returns student name and grade from `test_scores`. 
+- `SELECT AVG(grade) FROM test_scores;` : returns average of grades in `grade`. 
+
+To get the result in a 'single' query: 
+- `SELECT student, grade FROM test_scores WHERE grade > (SELECT AVG(grade) FROM test_scores);`
+  - Returns students with grades higher than the average, which was returned by the subquery using AVG(). 
+
+Subqueries can also operate on a table separate from the main query's. 
+
+Subqueries can be found within a condition of a WHERE clause. If the subquery returns more than 1 value, a comparison operator cannot be used, and must be replaced with `IN`. 
+
+Example: `SELECT student, grade FROM test_scores WHERE student IN (SELECT student FROM honor_roll_table);`
+- Returns grades of honors students only. 
+
+The `EXISTS` operator tests for existence of rows in a subquery. Typically subqueries are passed in the `EXISTS()` function to check if any rows are returned with that subquery. 
+
+Format: `SELECT column_name FROM table_name WHERE EXISTS(SELECT column_name FROM table_name WHERE condition);`
+
+Example: 
 
 ### Self-Join
 
