@@ -33,7 +33,23 @@
    4. [SubQuery](#subquery)
    5. [Self-Join](#self-join)
 8. [Creating Databases/Tables](#creating-databases-tables)
+   1. [Data types](#data-types)
+   2. [Primary Keys and Foreign Keys](#primary-keys-and-foreign-keys)
+   3. [Constraints](#constraints)
+   4. [CREATE](#create)
+   5. [INSERT](#insert)
+   6. [UPDATE](#update)
+   7. [DELETE](#delete)
+   8. [ALTER](#alter)
+   9. [DROP](#drop)
+   10. [CHECK Constraint](#check-constraint)
 9. [Conditional Expressions and Procedures](#conditional-expressions-and-procedures)
+   1. [CASE](#case)
+   2. [COALESCE](#coalesce)
+   3. [CAST](#cast)
+   4. [NULLIF](#nullif)
+   5. [Views](#views)
+   6. [Import and Export](#import-and-export)
 
 *Disclaimer: images and subject matter sourced from Jose Portilla, Pierian Data, "The Complete SQL Bootcamp 2020"*
 
@@ -578,8 +594,140 @@ ON f1.film_id != f2.film_id AND f1.length = f2.length;
 
 ## Creating Databases/Tables
 
+### Data Types
+[Data types, PostgreSQL](https://www.postgresql.org/docs/10/datatype.html)
+
+Common data types include: 
+- Boolean 
+- Character (`char`, `varchar`, `text`)
+- Numeric (integer, float)
+- Temporal (date, time, timestamp, interval)
+- UUID, universally unique identifier
+  - Created from an algorithm to ensure completely unique identifier for a data type
+- Array (for strings, numbers, etc.)
+- JSON
+- Hstore key-value pair
+- Special types (network address, geometric data, etc.)
+- `SERIAL`
+  - Creates a 'sequence'-type database object that generates a sequence of integers
+  - Especially used for primary keys, since it logs unique integer entries automatically upon insertion
+  - If a row is removed, the column with this data type will not adjust for it; this allows for easier visibility of removed rows
+  - Types of `SERIAL`:
+    - `SMALLSERIAL`
+      - 2 bytes
+      - Small autoincrementing integer
+      - 1 to 32767
+    - `SERIAL`
+      - 4 bytes
+      - Autoincrementing integer
+      - 1 to 2147483647
+    - `BIGSERIAL`
+      - 8 bytes
+      - Large autoincrementing integer
+      - 1 to 9223372036854775807
+
+### Primary Keys and Foreign Keys
+A primary key is a column/group of columns used to identify a row uniquely in a table. 
+
+A foreign key is a field/group of fields in a table that uniquely identifies a row (primary key) in another table. This other table is known as the referenced table/parent table, and the table that contains the foreign key is called the referencing table/child table. A table can have multiple foreign keys depending on its relationships with other tables. 
+
+Primary keys/foreign keys typically make good column choices for joining together two or more tables. 
+
+Generate a primary key column via `SERIAL` keyword as the data type for the column. 
+
+### Constraints
+The rules enforced on data columns on a table. Used to prevent invalid data from being entered into the database, and ensures accuracy/reliability of database data. 
+
+The two categories of constraints are: 
+- Column constraints: constrains data in a column to adhere to given conditions. 
+- Table constraints: applied to the entire table rather than to an individual column. 
+
+Common constraints used include: 
+- Column constraints
+  - `NOT NULL`: ensures that a column cannot contain `NULL` values. 
+  - `UNIQUE`: ensures that all values in a column are different. 
+  - `PRIMARY KEY`: uniquely identifies each row/record in a database table. 
+  - `FOREIGN KEY`: constrains data based on columns in other tables. 
+  - `CHECK`: ensures that all values in a column satisfy certain conditions. 
+  - `EXCLUSION`: ensures that if any two rows are compared on specified column/expression using specified operator, not all of these comparisons will return `TRUE`. 
+- Table constraints
+  - `CHECK (condition)`: checks a condition when inserting/updating data. 
+  - `REFERENCES`: constrains value stored in the column that must exist in a column in another table. 
+  - `UNIQUE (column_list)`: forces the values stored in the columns listed within the parameters to be unique. 
+  - `PRIMARY_KEY(column_list)`: allows defining the primary key to be defined within multiple columns. 
+
+### CREATE
+Allows creation of a table. 
+
+Format: 
+```
+CREATE TABLE table_name(
+  column_name1 TYPE column_constraint1,
+  column_name2 TYPE column_constraint2,
+  table_constraint1 table_constraint2
+) INHERITS existing_table_name;
+```
+- Each defined column/column constraint set separated by a comma. 
+- Each table constraint separated by a space. 
+
+Tables can be created and then linked via an intermediary table. 
+
+Example: 
+```
+CREATE TABLE account(
+	user_id SERIAL PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	email VARCHAR(250) UNIQUE NOT NULL,
+	created_on TIMESTAMP NOT NULL,
+	last_login TIMESTAMP
+)
+```
+- Creates an `account` table. 
+
+```
+CREATE TABLE job(
+	job_id SERIAL PRIMARY KEY,
+	job_name VARCHAR(200) UNIQUE NOT NULL
+)
+```
+- Creates a `job` table. 
+
+```
+CREATE TABLE account_job(
+	user_id INTEGER REFERENCES account(user_id),
+	job_id INTEGER REFERENCES job(job_id),
+	hire_date TIMESTAMP
+)
+```
+- Creates an `account_job` table. The `user_id` column specifically references the `user_id` column in the `user` table, and must specify as such. The `job_id` column specifically references the `job_id` column in the `job` table and must specify as such for the same reason. `hire_date` is information that is based on a given user and the type of job the user has. 
+
+### INSERT
+
+### UPDATE
+
+### DELETE
+
+### ALTER
+
+### DROP
+
+### CHECK Constraint
+
 [Back to Top](#table-of-contents)
 
 ## Conditional Expressions and Procedures
+
+### CASE
+
+### COALESCE
+
+### CAST
+
+### NULLIF
+
+### Views
+
+### Import and Export
 
 [Back to Top](#table-of-contents)
