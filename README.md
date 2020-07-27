@@ -69,6 +69,8 @@ SQL is used to store/retrieve/update/delete data. Databases have a wide variety 
 ## Spreadsheets vs. Databases
 Spreadsheets are most useful for one-time analyses, quick charting, reasonable dataset sizes, and those untrained to work with data. Databases are most useful for data integrity, handling (very) large datasets, combining datasets, automating queries, and supporting data for websites and apps. 
 
+[Back to Top](#table-of-contents)
+
 ## SQL Statement Fundamentals
 
 ### SELECT statement
@@ -194,6 +196,8 @@ Example: `SELECT version from programs WHERE version LIKE 'VERSION#__';`
 Example: `SELECT COUNT(*) from employees WHERE name LIKE '_her%';`
 - Returns the number of all names that contain the letters 'her' with exactly one letter preceding it. 
 
+[Back to Top](#table-of-contents)
+
 ## GROUP BY Statements
 
 ### Aggregation Functions
@@ -269,6 +273,8 @@ Example: `SELECT customer_id, COUNT(*) FROM payment GROUP BY customer_id HAVING 
 
 Example: `SELECT customer_id, SUM(amount) from payment WHERE staff_id = 2 GROUP BY customer_id HAVING SUM(amount) > 100;`
 - Returns customers associated with staff_id 2 whose sum amount is greater than 100. 
+
+[Back to Top](#table-of-contents)
 
 ## Joins
 Allows combination of multiple tables. 
@@ -432,6 +438,8 @@ WHERE first_name = 'Nick' AND last_name = 'Wahlberg';
 ```
 - Returns all movies in which 'Nick Wahlberg' is an actor. `actor` table includes actor `first_name`s, `last_name`s, and `actor_id`s. `film` includes film information, including `film_id`. `film_actor` includes `actor_id` and associated `film_id`s. Since 3 tables are needed to obtain the requested information on the 2 commonalities of `film_id` and `actor_id`, 2 `INNER JOIN`s are required. 
 
+[Back to Top](#table-of-contents)
+
 ## Advanced SQL Commands
 
 ### Timestamps and EXTRACT
@@ -515,9 +523,63 @@ The `EXISTS` operator tests for existence of rows in a subquery. Typically subqu
 Format: `SELECT column_name FROM table_name WHERE EXISTS(SELECT column_name FROM table_name WHERE condition);`
 
 Example: 
+```
+SELECT first_name, last_name FROM customer AS c 
+WHERE NOT EXISTS(
+  SELECT * FROM payment AS p 
+  WHERE p.customer_id = c.customer_id AND amount > 11
+);
+```
+- Returns all customer names where customer didn't pay greater than $11. 
+
+A `JOIN` operation in a subquery can be used in the `WHERE` condition in the main query. 
+
+Example: 
+```
+SELECT film_id, title FROM film
+WHERE film_id IN
+(SELECT inventory.film_id FROM rental
+INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id
+WHERE return_date BETWEEN '2005-05-29' AND '2005-05-30');
+```
+- Returns film titles where the film was returned between May 29th and May 30th. 
 
 ### Self-Join
+A query in which a table is joined to itself. Useful for **comparing** values in a column of rows **within the same table**. Table is not internally copied, but SQL performs the command as though it were. No special keyword for self-join; just `JOIN` the same table in both parts. However, an alias is required for 'each table' as though they were separate tables. 
+
+Format: 
+```
+SELECT tableA.col, tableB.col 
+FROM table AS tableA
+JOIN table AS tableB
+ON tableA.some_col = tableB.other_col;
+```
+
+Example: 
+```
+SELECT emp.name, report.name
+FROM employees AS emp
+JOIN employees AS report 
+ON emp.emp_id = report.report_id;
+```
+- ![selfjoin1](img/selfjoin1.JPG)
+- Returns the names of employees that report to other employees. 
+
+Example: 
+```
+SELECT f1.title, f2.title, f1.length
+FROM film AS f1
+JOIN film AS f2
+ON f1.film_id != f2.film_id AND f1.length = f2.length;
+```
+- Returns all films that have the same film length as a given film. 
+
+[Back to Top](#table-of-contents)
 
 ## Creating Databases/Tables
 
+[Back to Top](#table-of-contents)
+
 ## Conditional Expressions and Procedures
+
+[Back to Top](#table-of-contents)
