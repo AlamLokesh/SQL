@@ -703,6 +703,36 @@ CREATE TABLE account_job(
 - Creates an `account_job` table. The `user_id` column specifically references the `user_id` column in the `user` table, and must specify as such. The `job_id` column specifically references the `job_id` column in the `job` table and must specify as such for the same reason. `hire_date` is information that is based on a given user and the type of job the user has. 
 
 ### INSERT
+Allows insertion of rows into an existing table. 
+
+Format: 
+```
+INSERT INTO table_name(column1, column2, ...)
+  SELECT column1, column2, ...
+  FROM another_table
+  WHERE condition;
+```
+
+or 
+
+Format: 
+```
+INSERT INTO table_name(column1, column2, ...)
+  VALUES (value1, value2, ...)
+```
+
+`SERIAL` columns do not need to be provided a value. 
+
+Example: 
+```
+INSERT INTO table_name(column1, column2, ...)
+  VALUES 
+  ('Vik', 'password', 'vik@gmail.com', CURRENT_TIMESTAMP)
+```
+
+Constraints will be checked to see if values exist in the other table. If the value doesn't exist, a similar error to this may appear: 
+`ERROR:  insert or update on table "account_job" violates foreign key constraint "account_job_user_id_fkey"
+DETAIL:  Key (user_id)=(10) is not present in table "account".`
 
 ### UPDATE
 
