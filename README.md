@@ -735,10 +735,81 @@ Constraints will be checked to see if values exist in the other table. If the va
 DETAIL:  Key (user_id)=(10) is not present in table "account".`
 
 ### UPDATE
+Allows for changing of values of columns in a table. 
+
+Format: 
+```
+UPDATE table
+  SET column1 = value1,
+  column2 = value2, ...
+  WHERE condition;
+```
+
+Example: `UPDATE account SET last_login = CURRENT_TIMESTAMP WHERE last_login IS NULL;`
+- Sets `last_login` to `CURRENT_TIMESTAMP` wherever it is `null`. 
+
+Can also update a column based on another column. 
+
+Example: `UPDATE account SET last_login = created_on;`
+
+Can also update a column using another table's column's values. Also known as an UPDATE join. 
+
+Format: 
+```
+UPDATE table1
+SET original_col = table2.new_col
+FROM table2
+WHERE table1.id = table2.id
+```
+
+Example: 
+```
+UPDATE account_job 
+SET hire_date = account.created_on
+FROM account 
+WHERE account_job.user_id = account.user_id;
+```
+
+It's also possible to return the affected rows of an `UPDATE` query. 
+
+Format: `UPDATE table SET col1 = col2 RETURNING col1, col3 (or any columns);`
+
+Example: `UPDATE account SET last_login = created_on RETURNING *;`
+- Updates the first column to the values in the second column, then returning all columns of the affected rows. 
 
 ### DELETE
+Allows removal of rows from a table. 
+
+Format: `DELETE FROM table WHERE condition;`
+
+Can also delete from a table using rows from another table. 
+
+Format: `DELETE FROM table1 USING table2 WHERE table1.id = table2.id;`
+
+Can also delete all rows from a table. 
+
+Format: `DELETE FROM table;`
+
+Can also add in a `RETURNING` call to show affected rows. 
+
+Example: `DELETE FROM job WHERE job_name = 'Acupuncturist' RETURNING job_id, job_name;`
+
 
 ### ALTER
+Allows for changes to an existing table structure. 
+
+Format: `ALTER TABLE table_name action;`
+
+Possible changes include:
+- Adding, dropping, renaming columns
+  - Adding format: `ALTER TABLE table_name ADD COLUMN new_col TYPE;`
+  - Dropping format: `ALTER TABLE table_name DROP COLUMN col_name;`
+  - Altering constraint format: `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
+  
+- Changing column's data type
+- Setting `DEFAULT` values for a column
+- Adding `CHECK` constraints
+- Renaming table
 
 ### DROP
 
