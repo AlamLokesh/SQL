@@ -804,7 +804,11 @@ Possible changes include:
 - Adding, dropping, renaming columns
   - Adding format: `ALTER TABLE table_name ADD COLUMN new_col TYPE;`
   - Dropping format: `ALTER TABLE table_name DROP COLUMN col_name;`
-  - Altering constraint format: `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
+  - Altering constraint format
+    - `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
+    - `ALTER TABLE table_name ALTER COLUMN col_name DROP DEFAULT;`
+    - `ALTER TABLE table_name ALTER COLUMN col_name SET NOT NULL;`
+    - `ALTER TABLE table_name ALTER COLUMN col_name ADD CONSTRAINT constraint_name;`
   
 - Changing column's data type
 - Setting `DEFAULT` values for a column
