@@ -804,18 +804,30 @@ Possible changes include:
 - Adding, dropping, renaming columns
   - Adding format: `ALTER TABLE table_name ADD COLUMN new_col TYPE;`
   - Dropping format: `ALTER TABLE table_name DROP COLUMN col_name;`
-  - Altering constraint format
-    - `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
-    - `ALTER TABLE table_name ALTER COLUMN col_name DROP DEFAULT;`
+  - Altering column constraint format
     - `ALTER TABLE table_name ALTER COLUMN col_name SET NOT NULL;`
     - `ALTER TABLE table_name ALTER COLUMN col_name ADD CONSTRAINT constraint_name;`
-  
-- Changing column's data type
 - Setting `DEFAULT` values for a column
+  - `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
+  - `ALTER TABLE table_name ALTER COLUMN col_name DROP DEFAULT;`
 - Adding `CHECK` constraints
 - Renaming table
+  - `ALTER TABLE old_name RENAME TO new_name;`
 
 ### DROP
+Allows for removal of column from a table. In PostgreSQL, will automatically remove all indexes and constraints involving column. However, will not remove columns used in views, triggers, or stored procedures without additional `CASCADE` clause. 
+
+Format: `ALTER TABLE table_name DROP COLUMN col_name;`
+
+To drop dependencies, append `CASCADE` at the end of the query. 
+
+Attempting to drop a column that does not exist will throw an error. Check for existence to avoid a thrown error. 
+
+Format: `ALTER TABLE table_name DROP COLUMN IF EXISTS col_name;`
+
+Possible to drop multiple columns. 
+
+Format: `ALTER TABLE table_name DROP COLUMN col1, DROP COLUMN col2;`
 
 ### CHECK Constraint
 
