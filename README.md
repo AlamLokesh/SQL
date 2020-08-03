@@ -794,7 +794,6 @@ Can also add in a `RETURNING` call to show affected rows.
 
 Example: `DELETE FROM job WHERE job_name = 'Acupuncturist' RETURNING job_id, job_name;`
 
-
 ### ALTER
 Allows for changes to an existing table structure. 
 
@@ -807,6 +806,8 @@ Possible changes include:
   - Altering column constraint format
     - `ALTER TABLE table_name ALTER COLUMN col_name SET NOT NULL;`
     - `ALTER TABLE table_name ALTER COLUMN col_name ADD CONSTRAINT constraint_name;`
+    - `ALTER TABLE table_name ADD UNIQUE(col_name);`
+    - 
 - Setting `DEFAULT` values for a column
   - `ALTER TABLE table_name ALTER COLUMN col_name SET DEFAULT value;`
   - `ALTER TABLE table_name ALTER COLUMN col_name DROP DEFAULT;`
@@ -830,10 +831,27 @@ Possible to drop multiple columns.
 Format: `ALTER TABLE table_name DROP COLUMN col1, DROP COLUMN col2;`
 
 ### CHECK Constraint
+Allows customization of constraints that adhere to a desired condition. Errors should be thrown when 
+
+Format: `CREATE TABLE example(ex_id SERIAL PRIMARY KEY, col_1 SMALLINT CHECK (condition_1), col_2 SMALLINT CHECK(condition_2);`
+
+Example: 
+```
+CREATE TABLE employees(
+  emp_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  birthdate DATE CHECK(birthday > '1900-01-01'),
+  hire_date DATE CHECK(hire_date > birthdate),
+  salary INTEGER CHECK(salary > 0)
+)
+```
+- If birthdate < '1900-01-01', hire_date < birthdate, or salary < 0, error thrown will read `ERROR: new row for relation "employees" violates check constraint`...
 
 [Back to Top](#table-of-contents)
 
 ## Conditional Expressions and Procedures
+
 
 ### CASE
 
