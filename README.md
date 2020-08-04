@@ -144,6 +144,8 @@ Logical operators allow combination of comparison operators: `AND`, `OR`, `NOT`.
 
 String/s denoted by single quotation marks, i.e. `SELECT name, choice FROM table WHERE name='Vik' AND choice='Red'`. 
 
+[Back to Top](#table-of-contents)
+
 ### ORDER BY
 Sort rows in columns based on a column value, ascending or descending. 
 
@@ -393,6 +395,8 @@ WHERE customer.customer_id IS null
 OR payment_id IS null
 ```
 - Returns a joined customer/payment table on customer id where the customer id or payment id do not exist. Ensures customer information (email, name, etc.) are stored only if payment or purchsae history exists for that customer. 
+
+[Back to Top](#table-of-contents)
 
 ### LEFT (OUTER) JOIN
 Results in set of records that are in the 'left' table; includes all left table results and commonalities between left and right table. If there is no match with the right table, results are `null`. 
@@ -702,6 +706,8 @@ CREATE TABLE account_job(
 ```
 - Creates an `account_job` table. The `user_id` column specifically references the `user_id` column in the `user` table, and must specify as such. The `job_id` column specifically references the `job_id` column in the `job` table and must specify as such for the same reason. `hire_date` is information that is based on a given user and the type of job the user has. 
 
+[Back to Top](#table-of-contents)
+
 ### INSERT
 Allows insertion of rows into an existing table. 
 
@@ -946,6 +952,8 @@ FROM film
     HAVING rental_rate=0.99 or rental_rate=2.99 or rental_rate=4.99;
     ```
 
+[Back to Top](#table-of-contents)
+
 ### COALESCE
 Function that accepts an unlimited number of arguments. Returns the first argument that is not null. If all arguments are null, will return null. Useful when querying a table that contains null values and substituting it with another value. 
 
@@ -1010,5 +1018,8 @@ Format: `DROP VIEW IF EXISTS view_name;`
 Format: `ALTER VIEW old_view_name RENAME TO new_view_name;`
 
 ### Import and Export
+Allows import/export of data from a .csv to an already existing table (not every external data file will be compatible, in which case must alter current table to align with .csv, or alter .csv to align with current table). [Compatible file types, PostgreSQL](https://postgresql.org/docs/12/sql-copy.html)
+
+Note: a current table must exist in order for an import to run successfully. As of Jul 2020, no automation exists within PostgreSQL to create a table based on a .csv file. 
 
 [Back to Top](#table-of-contents)
