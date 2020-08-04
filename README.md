@@ -851,17 +851,163 @@ CREATE TABLE employees(
 [Back to Top](#table-of-contents)
 
 ## Conditional Expressions and Procedures
-
+Some keywords and functions allow adding logic to commands and workflows in SQL. 
 
 ### CASE
+Execute SQL code only when certain conditions are met. Similar to `IF/ELSE` statements in other languages. General `CASE` or `CASE` expressions are two ways to use a `CASE` statement. Both methods can lead to the same result, but general `CASE` statements are useful for more complex operations on conditions, and `CASE` expressions are more useful when checking simple equality. 
+
+Format (general): 
+```
+CASE 
+  WHEN condition1 THEN result1 
+  WHEN condition2 THEN result2 
+  ELSE result3
+END
+```
+
+Example: 
+```
+SELECT a,
+CASE 
+  WHEN a=1 THEN 'one'
+  WHEN a=2 THEN 'two'
+  ELSE 'other' AS label
+END
+FROM test;
+```
+- From the `a` column of `test` table, returns the `a` column alongside a column `label` that contains the results from each row evaluation. 
+
+Example: 
+```
+SELECT customer_id,
+CASE 
+	WHEN (customer_id<=100) THEN 'Premium'
+	WHEN (customer_id BETWEEN 100 and 200) THEN 'Plus'
+	ELSE 'Regular'
+END AS customer_class
+FROM customer;
+```
+- Label the first 100 customers to purchase something as 'Premium' customers, the next 100 as 'Plus', and the rest as 'Regular. 
+
+Format (expression):
+```
+CASE expression
+  WHEN value1 THEN result1
+  WHEN value2 THEN result2
+  ELSE result3
+END
+```
+
+Example:
+```
+SELECT a,
+CASE a
+  WHEN 1 THEN 'one'
+  WHEN 2 THEN 'two'
+  ELSE 'other'
+END
+FROM test;
+```
+- From the `a` column of `test` table, returns a specific result when the expression (in this case, the column) is equal to the given values. 
+
+Example: 
+```
+SELECT customer_id,
+CASE customer_id
+	WHEN 1 THEN 'Winner'
+	WHEN 2 THEN 'Second Place'
+	ELSE 'Contender'
+END AS raffle_results
+FROM customer;
+```
+- Label the first customer to sign up the winner, the second as second place, and the rest as contender. 
+
+Example: 
+```
+SELECT 
+SUM(CASE rental_rate
+	WHEN 0.99 THEN 1
+	ELSE 0
+END) AS bargains,
+SUM(CASE rental_rate
+  WHEN 2.99 THEN 1
+  ELSE 0
+END) AS regular,
+SUM(CASE rental_rate
+  WHEN 4.99 THEN 1
+  ELSE 0
+END) AS premium
+FROM film
+```
+- Returns the sum of rental rates, or bargains, that are $0.99, the number of rental_rates that are $2.99, and the number of rental_rates that are $4.99. This may be more contrived than using a `GROUP BY` statement as follows:
+  - ```
+    SELECT rental_rate, COUNT(rental_rate) FROM film
+    GROUP BY rental_rate
+    HAVING rental_rate=0.99 or rental_rate=2.99 or rental_rate=4.99;
+    ```
 
 ### COALESCE
+Function that accepts an unlimited number of arguments. Returns the first argument that is not null. If all arguments are null, will return null. Useful when querying a table that contains null values and substituting it with another value. 
+
+Format: `COALESCE(arg_1, arg_2, ..., arg_n)`
+
+Example: `SELECT item, (price - COALESCE(discount,0)) AS final FROM table;`
+- Returns the final price of each row with `null` values from the `discount` column replaced with 0. 
 
 ### CAST
+Allows conversion to another data type (data type compatibility should be considered (e.g. int -> string, string -/-> int)). 
+
+Format: `SELECT CAST(column_1 AS <data type>);`
+
+Format, specific to PostgreSQL: `SELECT 'column_1'::<data type>;`
+- `CAST` operator denoted as `::` . 
+
+Example: `SELECT char_length(CAST(inventory_id AS VARCHAR)) FROM rental;`
+- Returns the length of `inventory_id` values. 
 
 ### NULLIF
+Function that accepts two inputs and returns `null` if both are equal, else returns first argument passed. Useful where a `null` result would throw an error or unwanted result. 
+
+Format: `NULLIF(arg1,arg2)`
+
+Example: 
+```
+SELECT (
+SUM(CASE WHEN department = 'A' THEN 1 ELSE 0 END) / 
+NULLIF(SUM(CASE WHEN department = 'B' THEN 1 ELSE 0 END),0)
+) AS dept_ratio
+FROM depts;
+```
+- With a division operation, the possibility that the divisor is 0, exists. Ensure that null is returned and an error is not thrown, by surrounding the result of the divisor with NULLIF(resultant, 0) to return null if the resultant is 0. 
 
 ### Views
+A view is a database object resultant of a stored query. A view can be accessed as a 'virtual table' in PostgreSQL for later reference. Views only store the query, and not the data. Useful for repeated queries to refer to in subsequent queries. 
+
+Format: `CREATE VIEW view_name AS query;`
+
+Example: 
+```
+CREATE VIEW customer_info AS 
+SELECT first_name, last_name, address FROM customer
+INNER JOIN address
+ON customer.address_id = address.address_id;
+```
+
+It's possible to update, alter, or drop existing views. 
+
+Format: `CREATE OR REPLACE VIEW existing_view_name AS new_query;`
+
+Example:
+```
+CREATE OR REPLACE VIEW customer_info AS
+SELECT first_name, last_name, address, district FROM customer
+INNER JOIN addres
+ON customer.address_id = address.address_id;
+```
+
+Format: `DROP VIEW IF EXISTS view_name;`
+
+Format: `ALTER VIEW old_view_name RENAME TO new_view_name;`
 
 ### Import and Export
 
