@@ -442,7 +442,8 @@ Format: `SELECT column_name(s) FROM table1 UNION SELECT column_name(s) FROM tabl
 
 Example: `SELECT * FROM Sales2021_Q1 UNION SELECT * FROM Sales2021_Q2;`
 
-![union](img/union.JPG)
+![union1](img/union1.JPG)
+![union2](img/union2.JPG)
 
 ### Multiple JOINs
 If more than 2 tables are involved in a query, use at least 2 joins to obtain the desired results. 
