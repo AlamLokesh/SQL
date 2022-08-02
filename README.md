@@ -1063,7 +1063,7 @@ pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
    - Navigate to Restore options next to General
    - Select all Sections as "Yes"
    - Select Restore
-   - Should say "Restore job created" window
+   - Verify the "Restore job created" window appears
 
 6. Test the database connection
    - Right click on database and select "Query tool"
