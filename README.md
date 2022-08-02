@@ -71,31 +71,31 @@ pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
   - Select default locale
 
 2. Install pgAdmin
-- Visit [pgadmin](https://pgadmin.org) (https://pgadmin.org) and follow steps to download the latest version .exe
+   - Visit [pgadmin](https://pgadmin.org) (https://pgadmin.org) and follow steps to download the latest version .exe
 
 3. Download database (.tar)
-- Download the dvdrental.tar file available in this repo, which is a database that represents a DVD rental store with movies to rent and information on them. **NOTE: Do not open the .tar file directly**
+   - Download the dvdrental.tar file available in this repo, which is a database that represents a DVD rental store with movies to rent and information on them. **NOTE: Do not open the .tar file directly**
 
 4. Restart computer
 
 5. Restore database
-- Open the pgAdmin 4 app (not the .exe), may take a moment to start up
-- Set a master password (can be the same as the PostgreSQL password)
-- In the pgAdmin browser, find the PostgreSQL 12 server and enter its password
-- Verify connection through the elephant symbol
-- Right click on the server, navigate to "Create" and "Database"
-- Under "General", name the database "dvdrental" - this is just a placeholder until it's linked to dvdrental.tar
-- Right click on the "dvdrental" database under "Databases"
-- Search for the .tar path and select it
-- Navigate to Restore options next to General
-- Select all Sections as "Yes"
-- Select Restore
-- Should say "Restore job created" window
+   - Open the pgAdmin 4 app (not the .exe), may take a moment to start up
+   - Set a master password (can be the same as the PostgreSQL password)
+   - In the pgAdmin browser, find the PostgreSQL 12 server and enter its password
+   - Verify connection through the elephant symbol
+   - Right click on the server, navigate to "Create" and "Database"
+   - Under "General", name the database "dvdrental" - this is just a placeholder until it's linked to dvdrental.tar
+   - Right click on the "dvdrental" database under "Databases"
+   - Search for the .tar path and select it
+   - Navigate to Restore options next to General
+   - Select all Sections as "Yes"
+   - Select Restore
+   - Should say "Restore job created" window
 
 6. Test the database connection
-- Right click on database and select "Query tool"
-- A query editor should pop up. Run a query and select the play button or hit F5 on keyboard
-- Queried table should appear in the "Data Output" console below
+   - Right click on database and select "Query tool"
+   - A query editor should pop up. Run a query and select the play button or hit F5 on keyboard
+   - Queried table should appear in the "Data Output" console below
 
 
 ## SQL Compatibility
