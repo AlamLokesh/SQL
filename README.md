@@ -50,19 +50,17 @@
    4. [NULLIF](#nullif)
    5. [Views](#views)
    6. [Import and Export](#import-and-export)
-10. [Setup database UI](#setup-database-ui)
+10. [Setup database UI](#setup-database-ui-pc)
 
 *Disclaimer: images and subject matter sourced from Jose Portilla, Pierian Data, "The Complete SQL Bootcamp 2020"*
 
-# Setup Database UI
+# Setup Database UI, PC
 
 Practice running queries on a DVD rental store database 
 
 PostgreSQL: SQL engine that reads queries, stores data, and returns information
 
-pgAdmin: GUI for connecting with PostgreSQL
-
-Using a ".tar" file as the database
+pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
 
 1. Install PostgreSQL
 - Visit [PostgreSQL](https://www.postgresql.com) (https://www.postgresql.com) and follow steps to download the latest version (will be redirected to enterprisedb.com)
