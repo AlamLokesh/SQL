@@ -54,49 +54,6 @@
 
 *Disclaimer: images and subject matter sourced from Jose Portilla, Pierian Data, "The Complete SQL Bootcamp 2020"*
 
-# Setup Database UI, PC
-
-Practice running queries on a DVD rental store database 
-
-PostgreSQL: SQL engine that reads queries, stores data, and returns information
-
-pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
-
-1. Install PostgreSQL
-- Visit [PostgreSQL](https://www.postgresql.com) (https://www.postgresql.com) and follow steps to download the latest version (will be redirected to enterprisedb.com)
-  - Install all components
-  - Choose default data store
-  - Provide password for superuser (store somewhere important!)
-  - Port #: 5432
-  - Select default locale
-
-2. Install pgAdmin
-   - Visit [pgadmin](https://pgadmin.org) (https://pgadmin.org) and follow steps to download the latest version .exe
-
-3. Download database (.tar)
-   - Download the dvdrental.tar file available in this repo, which is a database that represents a DVD rental store with movies to rent and information on them. **NOTE: Do not open the .tar file directly**
-
-4. Restart computer
-
-5. Restore database
-   - Open the pgAdmin 4 app (not the .exe), may take a moment to start up
-   - Set a master password (can be the same as the PostgreSQL password)
-   - In the pgAdmin browser, find the PostgreSQL 12 server and enter its password
-   - Verify connection through the elephant symbol
-   - Right click on the server, navigate to "Create" and "Database"
-   - Under "General", name the database "dvdrental" - this is just a placeholder until it's linked to dvdrental.tar
-   - Right click on the "dvdrental" database under "Databases"
-   - Search for the .tar path and select it
-   - Navigate to Restore options next to General
-   - Select all Sections as "Yes"
-   - Select Restore
-   - Should say "Restore job created" window
-
-6. Test the database connection
-   - Right click on database and select "Query tool"
-   - A query editor should pop up. Run a query and select the play button or hit F5 on keyboard
-   - Queried table should appear in the "Data Output" console below
-
 
 ## SQL Compatibility
 SQL can be used with most engines/software/databases that implement SQL (PostgreSQL, MySQL, Amazon RedShift, Microsoft SQL Server, MySQL, Oracle Database). 
@@ -1067,5 +1024,50 @@ Format: `ALTER VIEW old_view_name RENAME TO new_view_name;`
 Allows import/export of data from a .csv to an already existing table (not every external data file will be compatible, in which case must alter current table to align with .csv, or alter .csv to align with current table). [Compatible file types, PostgreSQL](https://postgresql.org/docs/12/sql-copy.html)
 
 Note: a current table must exist in order for an import to run successfully. As of Jul 2020, no automation exists within PostgreSQL to create a table based on a .csv file. 
+
+[Back to Top](#table-of-contents)
+
+# Setup Database UI, PC
+
+Practice running queries on a DVD rental store database 
+
+PostgreSQL: SQL engine that reads queries, stores data, and returns information
+
+pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
+
+1. Install PostgreSQL
+- Visit [PostgreSQL](https://www.postgresql.com) (https://www.postgresql.com) and follow steps to download the latest version (will be redirected to enterprisedb.com)
+  - Install all components
+  - Choose default data store
+  - Provide password for superuser (store somewhere important!)
+  - Port #: 5432
+  - Select default locale
+
+2. Install pgAdmin
+   - Visit [pgadmin](https://pgadmin.org) (https://pgadmin.org) and follow steps to download the latest version .exe
+
+3. Download database (.tar)
+   - Download the dvdrental.tar file available in this repo, which is a database that represents a DVD rental store with movies to rent and information on them. **NOTE: Do not open the .tar file directly**
+
+4. Restart computer
+
+5. Restore database
+   - Open the pgAdmin 4 app (not the .exe), may take a moment to start up
+   - Set a master password (can be the same as the PostgreSQL password)
+   - In the pgAdmin browser, find the PostgreSQL 12 server and enter its password
+   - Verify connection through the elephant symbol
+   - Right click on the server, navigate to "Create" and "Database"
+   - Under "General", name the database "dvdrental" - this is just a placeholder until it's linked to dvdrental.tar
+   - Right click on the "dvdrental" database under "Databases"
+   - Search for the .tar path and select it
+   - Navigate to Restore options next to General
+   - Select all Sections as "Yes"
+   - Select Restore
+   - Should say "Restore job created" window
+
+6. Test the database connection
+   - Right click on database and select "Query tool"
+   - A query editor should pop up. Run a query and select the play button or hit F5 on keyboard
+   - Queried table should appear in the "Data Output" console below
 
 [Back to Top](#table-of-contents)
