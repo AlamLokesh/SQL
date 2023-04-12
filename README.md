@@ -1036,7 +1036,7 @@ PostgreSQL: SQL engine that reads queries, stores data, and returns information
 pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
 
 1. Install PostgreSQL
-- Visit [PostgreSQL](https://www.postgresql.com) (https://www.postgresql.com) and follow steps to download the latest version (will be redirected to enterprisedb.com)
+- Visit [PostgreSQL](https://www.postgresql.org) and follow steps to download the latest version (will be redirected to enterprisedb.com)
   - Install all components
   - Choose default data store
   - Provide password for superuser (store somewhere important!)
