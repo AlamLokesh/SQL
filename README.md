@@ -1058,8 +1058,8 @@ pgAdmin: GUI for connecting with PostgreSQL and databases (.tar file)
    - Verify connection through the elephant symbol
    - Right click on the server, navigate to "Create" and "Database"
    - Under "General", name the database "dvdrental" - this is just a placeholder until it's linked to dvdrental.tar
-   - Right click on the "dvdrental" database under "Databases"
-   - Search for the .tar path and select it
+   - Right click on the "dvdrental" database under "Databases" and choose "Restore"
+   - Search for the .tar path and select it in the dropdown
    - Navigate to Restore options next to General
    - Select all Sections as "Yes"
    - Select Restore
